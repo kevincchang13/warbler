@@ -12,8 +12,8 @@ class Warblers(Resource):
         pass
 
 class Warbler(Resource):
-    def post(self, user_id): #create new wablereressss
-        pass
+    # def post(self, user_id): #create new wablereressss
+    #     pass
 
     def get(self, warbler_id, user_id):
         pass
@@ -21,6 +21,6 @@ class Warbler(Resource):
     def delete(self, warbler_id, user_id):
         pass
 
-warblers_api.add_resource(Warblers)
+warblers_api.add_resource(Warblers, '')
 warblers_api.add_resource(Warbler, '/<string:user_id>/<string:warbler_id>')
-warblers_api.add_resource(Warbler, '/<string:user_id>')
+# warblers_api.add_resource(Warbler, '/<string:user_id>')
