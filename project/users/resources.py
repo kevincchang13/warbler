@@ -11,11 +11,11 @@ class Users(Resource):
     def get(self): #get all users
         # call database using user_id
         # send JSON response with user object
-        return make_response(jsonify({ "test": "one" }))
         pass
+
     def post(self): #create new user
         content = request.get_json()
-        user = User(content.email, content.username, content.name, content.password)
+        user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
         return make_response(jsonify(user))
