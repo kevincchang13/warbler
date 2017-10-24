@@ -12,8 +12,12 @@ class WarblersAPI(Resource):
         pass
 
 class WarblerAPI(Resource):
-    # def post(self, user_id): #create new wablereressss
-    #     pass
+    def post(self, user_id): #create new wablereressss
+        content = request.get_json()
+        warble = Warbler(content['message'], user_id)
+        db.session.add(warble)
+        db.session.commit()
+        
 
     def get(self, warbler_id, user_id):
         pass
@@ -23,4 +27,4 @@ class WarblerAPI(Resource):
 
 warblers_api.add_resource(WarblersAPI, '')
 warblers_api.add_resource(WarblerAPI, '/<string:user_id>/<string:warbler_id>')
-# warblers_api.add_resource(Warbler, '/<string:user_id>')
+warblers_api.add_resource(WarblerAPI, '/<string:user_id>')
