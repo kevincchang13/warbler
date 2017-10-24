@@ -11,14 +11,15 @@ class Users(Resource):
     def get(self): #get all users
         # call database using user_id
         # send JSON response with user object
-        return make_response(jsonify({ "test": "one" }))
         pass
+
     def post(self): #create new user
         content = request.get_json()
-        user = User(content.email, content.username, content.name, content.password)
+        from IPython import embed; embed()
+        user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
-        return make_response(jsonify(user))
+    
         # parse JSON body
         # call database to create user
         # send JSON response of created user

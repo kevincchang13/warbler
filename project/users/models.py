@@ -8,11 +8,11 @@ class User(db.Model):
     username = db.Column(db.Text, unique=True)
     name = db.Column(db.Text)
     password = db.Column(db.Text)
-    messages = db.relationship(
-        'User',
-        lazy='dynamic',
-        backref=db.backref('user')
-    )
+    # messages = db.relationship(
+    #     'User',
+    #     lazy='dynamic',
+    #     backref=db.backref('user')
+    # )
 
     def __init__(self, email, username, name, password):
         self.email = email
