@@ -18,7 +18,6 @@ class UsersAPI(Resource):
         user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
-        return make_response(jsonify(user))
         # parse JSON body
         # call database to create user
         # send JSON response of created user
