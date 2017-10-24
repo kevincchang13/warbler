@@ -1,10 +1,7 @@
-from flask import Flask
+from project import app
+import os
 
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return 'Welcome'
+false_in_production = os.environ.get('ENV') != 'production'
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=3000)

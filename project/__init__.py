@@ -11,8 +11,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 
-from project.users.views import users_api
-from project.warblers.views import warblers_api
+from project.users.resources import user_blueprint
+app.register_blueprint(user_blueprint, url_prefix='/users')
 
-app.register_blueprint(users_api, url_prefix='/users')
-app.register_blueprint(warblers_api, url_prefix='/warblers')
+from project.warblers.resources import warbler_blueprint
+app.register_blueprint(warbler_blueprint, url_prefix='/warblers')
