@@ -8,9 +8,19 @@ warblers_api = Api(warbler_blueprint)
 
 # @warblers_api.resource('/')
 class Warblers(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('message', type=str, help='message')
-        args = parser.parse_args()
+    def get(self): #get all wablererss
+        pass
+
+class Warbler(Resource):
+    def post(self, user_id): #create new wablereressss
+        pass
+
+    def get(self, warbler_id, user_id):
+        pass
+
+    def delete(self, warbler_id, user_id):
+        pass
 
 warblers_api.add_resource(Warblers)
+warblers_api.add_resource(Warbler, '/<string:user_id>/<string:warbler_id>')
+warblers_api.add_resource(Warbler, '/<string:user_id>')
