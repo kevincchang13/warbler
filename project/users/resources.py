@@ -7,7 +7,7 @@ user_blueprint = Blueprint('users', __name__)
 users_api = Api(user_blueprint)
 
 # @users_api.resource('/')
-class Users(Resource):
+class UsersAPI(Resource):
     def get(self): #get all users
         # call database using user_id
         # send JSON response with user object
@@ -24,7 +24,7 @@ class Users(Resource):
         # call database to create user
         # send JSON response of created user
 
-class User(Resource):
+class UserAPI(Resource):
     def get(self, user_id): # get single user
         # call database using user_id
         # send JSON response with user object
@@ -36,6 +36,6 @@ class User(Resource):
 
 
 
-users_api.add_resource(Users, '')
-users_api.add_resource(User, '/<string:user_id>')
+users_api.add_resource(UsersAPI, '')
+users_api.add_resource(UserAPI, '/<string:user_id>')
 
