@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from flask_restful import Api, Resource, reqparse, marshal_with, fields
+from flask_restful import Api, Resource, reqparse, marshal, fields
 from project.warblers.models import Warbler
 from project import db, bcrypt
 
@@ -20,7 +20,10 @@ class WarblersAPI(Resource):
 class WarblerAPI(Resource):
     def get(self, warbler_id, user_id):
         warble = Warbler.query.get_or_404(warbler_id)
-        return make_response(jsonify(warble))
+        resource_fields = {
+            'message': fields.String
+        }
+        return marshal(warble, resource_fields)
         
     def delete(self, warbler_id, user_id):
         pass
