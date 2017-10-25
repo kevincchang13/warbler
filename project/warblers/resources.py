@@ -26,15 +26,12 @@ class WarblersAPI(Resource):
 
     @marshal_with(warbler_fields)
     def get(self, user_id): #get all wablererss for specific user
-        return User.query.get(user_id).messages.all()
+        return User.query.get_or_404(user_id).messages.all()
 
 class WarblerAPI(Resource):
+    @marshal_with(warbler_fields)
     def get(self, warbler_id, user_id):
-        warble = Warbler.query.get_or_404(warbler_id)
-        resource_fields = {
-            'message': fields.String
-        }
-        return marshal(warble, resource_fields)
+        return Warbler.query.get(warbler_id)
         
     def delete(self, warbler_id, user_id):
         pass
