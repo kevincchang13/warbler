@@ -1,11 +1,22 @@
 from flask import Blueprint, make_response, jsonify, request
-from flask_restful import Api, Resource, fields, marshal
+from flask_restful import Api, Resource, fields, marshal_with
 from project.users.models import User
 from project import db, bcrypt
 from flask_jwt import JWT, jwt_required, current_identity
 
 user_blueprint = Blueprint('users', __name__)
 users_api = Api(user_blueprint)
+
+warbler_fields = {
+    'message': fields.String
+}
+
+user_fields = {
+    'id': fields.Integer,
+    'email': fields.String,
+    'username': fields.String,
+    'messages': fields.List(fields.Nested(warbler_fields))
+}
 
 # @users_api.resource('/')
 class UsersAPI(Resource):
@@ -25,12 +36,11 @@ class UsersAPI(Resource):
         # send JSON response of created user
 
 class UserAPI(Resource):
+    @marshal_with(user_fields)
     def get(self, user_id): # get single user
-        # call database using user_id
-        # send JSON response with user object
-        
-        return make_response(jsonify({ "test": "one" }))
-        pass
+        return User.query.get_or_404(user_id)
+
+
     def delete(self, user_id): #delete user
         pass
 
