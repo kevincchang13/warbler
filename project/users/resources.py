@@ -1,7 +1,8 @@
 from flask import Blueprint, make_response, jsonify, request
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, fields, marshal
 from project.users.models import User
-from project import db
+from project import db, bcrypt
+from flask_jwt import JWT, jwt_required, current_identity
 
 user_blueprint = Blueprint('users', __name__)
 users_api = Api(user_blueprint)
@@ -33,8 +34,24 @@ class UserAPI(Resource):
     def delete(self, user_id): #delete user
         pass
 
+class Auth(Resource):
+    def post(self):
+        content = request.get_json()
+        user = User.query.filter_by(username=content['username']).first()
+        if user:
+            authenticated_user=bcrypt.check_password_hash(user.password, content['password'])
+            if authenticated_user:
+                resource_fields = {
+                    'id': fields.Integer,
+                    'email': fields.String,
+                    'username': fields.String
+                }
+                return marshal(user, resource_fields)
+        return False
+
 
 
 users_api.add_resource(UsersAPI, '')
 users_api.add_resource(UserAPI, '/<string:user_id>')
+users_api.add_resource(Auth, '/auth')
 
