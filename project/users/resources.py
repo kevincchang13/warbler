@@ -21,27 +21,46 @@ user_fields = {
     'messages': fields.List(fields.Nested(warbler_fields))
 }
 
+# def token_required(fn):
+#     @wraps(fn)
+#     def decorated(*args, **kwargs):
+#         token = None
+
+#         if 'x-access-token' in request.headers:
+#             token = request.headers['x-access-token']
+
+#         if not token:
+#             return jsonify({'message': 'Token is missing'}), 401
+
+#         try:
+#             data = jwt.decode(token, os.environ.get('SECRET_KEY'))
+#             current_user = User.query.filter_by(user_id=data['user_id']).first()
+#         except:
+#             return jsonify({'message': 'Token is ainvalid'}), 401
+
+#         return fn(current_user, *args, **kwargs)
+
+#     return decorated
+
 # @users_api.resource('/')
 class UsersAPI(Resource):
+    @marshal_with(user_fields)
     def get(self): #get all users
-        # call database using user_id
-        # send JSON response with user object
         pass
 
+    # @token_required
     def post(self): #create new user
         content = request.get_json()
         user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
-        # parse JSON body
-        # call database to create user
-        # send JSON response of created user
+        return {}
 
 class UserAPI(Resource):
-    @marshal_with(user_fields)
+    # @token_required
     def get(self, user_id): # get single user
         return User.query.get_or_404(user_id)
-
+    # @token_required
     def delete(self, user_id): #delete user
         pass
 
@@ -57,8 +76,14 @@ class Auth(Resource):
                 return jsonify({'token' : token.decode('UTF-8')})
         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required'})
 
+class Follow(Resource):
+    def post(self, user_id):
+        pass
+
+    def delete(self,user_id):
+        pass
 
 users_api.add_resource(UsersAPI, '')
 users_api.add_resource(UserAPI, '/<string:user_id>')
 users_api.add_resource(Auth, '/auth')
-
+users_api.add_resource(Follow, '/<string:user_id>/follow')
