@@ -1,8 +1,11 @@
 from flask import Blueprint, make_response, jsonify, request
+import jwt
+import datetime
 from flask_restful import Api, Resource, fields, marshal_with
 from project.users.models import User
 from project import db, bcrypt
-from flask_jwt import JWT, jwt_required, current_identity
+
+import os
 
 user_blueprint = Blueprint('users', __name__)
 users_api = Api(user_blueprint)
@@ -41,7 +44,6 @@ class UserAPI(Resource):
     def get(self, user_id): # get single user
         return User.query.get_or_404(user_id)
 
-
     def delete(self, user_id): #delete user
         pass
 
@@ -52,14 +54,10 @@ class Auth(Resource):
         if user:
             authenticated_user=bcrypt.check_password_hash(user.password, content['password'])
             if authenticated_user:
-                resource_fields = {
-                    'id': fields.Integer,
-                    'email': fields.String,
-                    'username': fields.String
-                }
-                return marshal(user, resource_fields)
-        return False
-
+                # https://www.youtube.com/watch?v=J5bIPtEbS0Q
+                token = jwt.encode({'user' : user.username, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, os.environ.get('SECRET_KEY'))
+                return jsonify({'token' : token.decode('UTF-8')})
+        return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required'})
 
 
 users_api.add_resource(UsersAPI, '')
