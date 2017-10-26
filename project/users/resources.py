@@ -78,6 +78,7 @@ class Auth(Resource):
                 return jsonify({'token' : token.decode('UTF-8')})
         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required'})
 
+# https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-viii-followers-contacts-and-friends
 class Follow(Resource):
     def post(self, user_id):
         pass

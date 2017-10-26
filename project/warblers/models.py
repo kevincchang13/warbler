@@ -11,9 +11,10 @@ class Warbler(db.Model):
         db.Integer,
         db.ForeignKey('users.id')
     )
-    username = db.Column(
-        db.Text,
-        db.ForeignKey('users.username')
+    user = db.relationship(
+        'User',
+        lazy='dynamic',
+        backref=db.backref('warbler')
     )
 
     def __init__(self, message, user_id) :
