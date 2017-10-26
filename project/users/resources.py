@@ -15,6 +15,7 @@ user_fields = {
     'id': fields.Integer,
     'email': fields.String,
     'username': fields.String,
+    'name': fields.String,
     'messages': fields.List(fields.Nested(warbler_fields))
 }
 
