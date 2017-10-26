@@ -7,10 +7,16 @@ from project import db, bcrypt
 warbler_blueprint = Blueprint('warblers', __name__)
 warblers_api = Api(warbler_blueprint)
 
+user_fields = {
+    'id': fields.Integer,
+    'email': fields.String,
+    'username': fields.String,
+}
+
 warbler_fields = {
     'message': fields.String,
     'created_at': fields.DateTime(dt_format='iso8601'),
-    'username': fields.String
+    'user': fields.List(fields.Nested(user_fields))
 }
 
 # def db_get_messages(user_id):
