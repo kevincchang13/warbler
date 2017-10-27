@@ -58,6 +58,8 @@ class Auth(Resource):
         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required'})
 
 
+
+
 users_api.add_resource(UsersAPI, '')
 users_api.add_resource(UserAPI, '/<string:user_id>')
 users_api.add_resource(Auth, '/auth')
