@@ -3,6 +3,7 @@ from flask_restful import Api, Resource, reqparse, marshal_with, fields
 from project.warblers.models import Warbler
 from project.users.models import User
 from project import db, bcrypt
+from sqlalchemy import desc
 
 warbler_blueprint = Blueprint('warblers', __name__)
 warblers_api = Api(warbler_blueprint)
@@ -47,7 +48,8 @@ class WarblerAPI(Resource):
 class WarblersAll(Resource):
     @marshal_with(warbler_fields)
     def get(self):
-       return Warbler.query.all.limit(100)
+        warblers = Warbler.query.order_by(desc('created_at')).limit(100).all()
+        return warblers
 
 warblers_api.add_resource(WarblersAPI, '/<string:user_id>')
 warblers_api.add_resource(WarblerAPI, '/<string:user_id>/<string:warbler_id>')
