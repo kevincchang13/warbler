@@ -11,14 +11,22 @@ user_blueprint = Blueprint('users', __name__)
 users_api = Api(user_blueprint)
 
 warbler_fields = {
-    'message': fields.String
+    'message': fields.String,
+    'created_at': fields.DateTime(dt_format='iso8601')
+}
+
+followed_fields = {
+    'id': fields.Integer,
+    'email': fields.String,
+    'username': fields.String
 }
 
 user_fields = {
     'id': fields.Integer,
     'email': fields.String,
     'username': fields.String,
-    'messages': fields.List(fields.Nested(warbler_fields))
+    'messages': fields.List(fields.Nested(warbler_fields)),
+    'followed': fields.List(fields.Nested(followed_fields))
 }
 
 # def token_required(fn):
