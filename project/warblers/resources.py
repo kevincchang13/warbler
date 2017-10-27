@@ -9,15 +9,17 @@ warbler_blueprint = Blueprint('warblers', __name__)
 warblers_api = Api(warbler_blueprint)
 
 user_fields = {
-    'id': fields.Integer,
-    'email': fields.String,
-    'username': fields.String,
+    # 'id': fields.Integer,
+    # 'email': fields.String,
+    'username': fields.String
 }
 
 warbler_fields = {
+    'id': fields.Integer,
     'message': fields.String,
     'created_at': fields.DateTime(dt_format='iso8601'),
-    'user': fields.List(fields.Nested(user_fields))
+    # 'user': fields.List(fields.Nested(user_fields))
+    'username': fields.String(attribute='user.username')
 }
 
 # def db_get_messages(user_id):
@@ -49,8 +51,9 @@ class WarblersAll(Resource):
     @marshal_with(warbler_fields)
     def get(self):
         warblers = Warbler.query.order_by(desc('created_at')).limit(100).all()
+        # warblers = [{"message": w.message, "created_at": w.created_at, "username": w.user.username} for w in warbs]
         return warblers
 
 warblers_api.add_resource(WarblersAPI, '/<string:user_id>')
 warblers_api.add_resource(WarblerAPI, '/<string:user_id>/<string:warbler_id>')
-warblers_api.add_resource(WarblersAll, '/')
+warblers_api.add_resource(WarblersAll, '')

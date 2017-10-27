@@ -60,7 +60,6 @@ class UsersAPI(Resource):
     # @token_required
     def post(self): #create new user
         content = request.get_json()
-        from IPython import embed; embed()
         user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
