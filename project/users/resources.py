@@ -58,12 +58,13 @@ class UsersAPI(Resource):
         pass
 
     # @token_required
+    @marshal_with(user_fields)
     def post(self): #create new user
         content = request.get_json()
         user = User(content['email'], content['username'], content['name'], content['password'])
         db.session.add(user)
         db.session.commit()
-        return {}
+        return user
 
 class UserAPI(Resource):
     # @token_required
