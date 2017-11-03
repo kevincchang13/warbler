@@ -13,6 +13,7 @@ class User(db.Model):
     username = db.Column(db.Text, unique=True)
     name = db.Column(db.Text)
     password = db.Column(db.Text)
+    image_url = db.Column(db.Text)
     messages = db.relationship(
         'Warbler',
         lazy='dynamic',
@@ -27,11 +28,12 @@ class User(db.Model):
         lazy='dynamic'
     )
 
-    def __init__(self, email, username, name, password):
+    def __init__(self, email, username, name, password, image_url):
         self.email = email
         self.username = username
         self.name = name
         self.password = bcrypt.generate_password_hash(password).decode('UTF-8')
+        self.image_url = image_url
 
     def follow(self, user):
         if not self.is_following(user):
