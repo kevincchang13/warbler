@@ -17,12 +17,15 @@ user_fields = {
     'id': fields.Integer,
     'email': fields.String,
     'username': fields.String,
+    'profile_img' : fields.String
 }
 
 warbler_fields = {
+    'id': fields.Integer,
     'message': fields.String,
     'created_at': fields.DateTime(dt_format='iso8601'),
-    'user': fields.List(fields.Nested(user_fields))
+    'user': fields.List(fields.Nested(user_fields)),
+    'img_url' : fields.String
 }
 
 def token_required(f):
@@ -46,7 +49,7 @@ def token_required(f):
 
 # @warblers_api.resource('/')
 class WarblersAPI(Resource):
-    @token_required
+    # @token_required
     def post(self, user_id): #create new wablereressss
         print('WarblersAPI')
         content = request.get_json()
@@ -71,6 +74,7 @@ class WarblersAll(Resource):
     @marshal_with(warbler_fields)
     def get(self):
         warblers = Warbler.query.order_by(desc('created_at')).limit(100).all()
+
         return warblers
 
 warblers_api.add_resource(WarblersAPI, '/<string:user_id>')
