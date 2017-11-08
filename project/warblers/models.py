@@ -10,8 +10,11 @@ class Warbler(db.Model):
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id')
-    )
+        )
+    img_url = db.Column(db.Text)
 
-    def __init__(self, message, user_id) :
+    def __init__(self, message, img_url, user_id) :
         self.message = message
+        self.img_url = img_url
         self.user_id = user_id
+
