@@ -66,7 +66,8 @@ class UsersAPI(Resource):
                 content['email'],
                 content['username'],
                 content['name'],
-                content['password'] #hashed password created in models.py
+                content['password'], #hashed password created in models.py
+                content['profile_img']
                 )
             db.session.add(user)
             db.session.commit()

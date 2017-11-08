@@ -13,7 +13,8 @@ class Warbler(db.Model):
         )
     img_url = db.Column(db.Text)
 
-    def __init__(self, message, user_id, img_url) :
+    def __init__(self, message, img_url, user_id) :
         self.message = message
-        self.user_id = user_id
         self.img_url = img_url
+        self.user_id = user_id
+

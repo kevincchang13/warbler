@@ -53,10 +53,15 @@ class WarblersAPI(Resource):
     def post(self, user_id): #create new wablereressss
         print('WarblersAPI')
         content = request.get_json()
-        warble = Warbler(content['message'], user_id)
+        warble = Warbler(content['message'], content['img_url'], user_id)
         db.session.add(warble)
         db.session.commit()
-        return
+        return jsonify({'message' : 'need message id'})
+
+    @marshal_with(warbler_fields)
+    def get(self, user_id):
+        warblers = Warbler.query.filter_by(user_id=user_id).order_by(desc('created_at')).limit(100).all()
+        return warblers
 
     # @marshal_with(warbler_fields)
     # def get(self, user_id): #get all wablererss for specific user
@@ -74,7 +79,6 @@ class WarblersAll(Resource):
     @marshal_with(warbler_fields)
     def get(self):
         warblers = Warbler.query.order_by(desc('created_at')).limit(100).all()
-
         return warblers
 
 warblers_api.add_resource(WarblersAPI, '/<string:user_id>')
